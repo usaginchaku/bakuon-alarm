@@ -1,0 +1,144 @@
+:root {
+  --bg: #111114;
+  --panel: #1c1c21;
+  --line: #2e2e36;
+  --text: #f4f4f6;
+  --muted: #9a9aa6;
+  --accent: #ff3b30;
+  --accent-2: #ffcc00;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+main {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 24px) 16px calc(env(safe-area-inset-bottom) + 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+header { text-align: center; }
+h1 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: .08em; color: var(--muted); }
+.now { margin: 8px 0 0; font-size: 44px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.panel[hidden] { display: none; }
+
+.field { display: flex; flex-direction: column; gap: 8px; border: 0; margin: 0; padding: 0; }
+.field > span, legend { font-size: 14px; color: var(--muted); padding: 0; margin-bottom: 8px; }
+
+input[type="time"] {
+  font: inherit;
+  font-size: 40px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  width: 100%;
+  min-height: 72px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.sounds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.sounds label { position: relative; }
+.sounds input { position: absolute; opacity: 0; pointer-events: none; }
+.sounds span {
+  display: block;
+  text-align: center;
+  padding: 12px 4px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  font-size: 14px;
+  font-weight: 600;
+}
+.sounds input:checked + span { border-color: var(--accent); color: var(--accent); }
+.sounds input:focus-visible + span { outline: 2px solid var(--accent-2); }
+
+.btn {
+  font: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  padding: 16px;
+  min-height: 56px;
+  color: var(--text);
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.ghost { background: var(--bg); }
+.btn:active { transform: scale(.98); }
+
+.label { margin: 0; color: var(--muted); font-size: 14px; text-align: center; }
+.big { margin: 0; font-size: 72px; font-weight: 800; text-align: center; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.sub { margin: 0; text-align: center; color: var(--muted); }
+.status { margin: 0; text-align: center; font-size: 13px; color: var(--muted); }
+.status.warn { color: var(--accent-2); }
+
+.tips summary { color: var(--muted); font-size: 14px; cursor: pointer; }
+.tips ul { margin: 8px 0 0; padding-left: 20px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+/* 鳴動中 */
+body[data-state="ringing"] { animation: flash .5s steps(1) infinite; }
+main[data-state="ringing"] header h1,
+main[data-state="ringing"] .now { color: #fff; }
+main[data-state="ringing"] .panel { background: rgba(0, 0, 0, .55); border-color: transparent; }
+@keyframes flash {
+  0% { background: var(--accent); }
+  50% { background: #000; }
+}
+.shout { font-size: 56px; color: #fff; }
+
+.btn.stop {
+  position: relative;
+  overflow: hidden;
+  min-height: 96px;
+  font-size: 20px;
+  background: #fff;
+  color: #000;
+  border: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.btn.stop .fill {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: var(--accent-2);
+}
+.btn.stop .text { position: relative; }
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-state="ringing"] { animation-duration: 2s; }
+}

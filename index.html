@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>爆音アラーム</title>
+  <meta name="description" content="iPhoneのSafariで動く、止めにくい爆音アラーム">
+  <meta name="theme-color" content="#111114">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="爆音アラーム">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app" data-state="idle">
+    <header>
+      <h1>爆音アラーム</h1>
+      <p class="now" id="now">--:--:--</p>
+    </header>
+
+    <!-- 待機前: 設定 -->
+    <section class="panel" id="setup">
+      <label class="field">
+        <span>起きる時刻</span>
+        <input type="time" id="time" value="07:00" required>
+      </label>
+
+      <fieldset class="field">
+        <legend>音</legend>
+        <div class="sounds">
+          <label><input type="radio" name="sound" value="siren" checked><span>サイレン</span></label>
+          <label><input type="radio" name="sound" value="beep"><span>警報ビープ</span></label>
+          <label><input type="radio" name="sound" value="chaos"><span>カオス</span></label>
+        </div>
+      </fieldset>
+
+      <button class="btn ghost" id="test" type="button">3秒だけ試し聞き</button>
+      <button class="btn primary" id="arm" type="button">アラームをセット</button>
+
+      <details class="tips">
+        <summary>確実に鳴らすために</summary>
+        <ul>
+          <li>iPhone本体の音量を最大にしておく（アプリからは音量を上げられません）</li>
+          <li>セット後はこの画面を開いたまま、充電しながら置いておくのがいちばん確実です</li>
+          <li>画面ロックや他アプリへの切り替えでも鳴ることはありますが、iOSが止めることがあります</li>
+          <li>他のアプリで音楽や動画を再生すると、こちらの音が止まります</li>
+          <li>サイレントスイッチがオンでも鳴る作りにしています</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- 待機中 -->
+    <section class="panel" id="armed" hidden>
+      <p class="label">次のアラーム</p>
+      <p class="big" id="target">--:--</p>
+      <p class="sub" id="remain">あと --</p>
+      <p class="status" id="wake">画面の自動ロック: 確認中…</p>
+      <button class="btn ghost" id="cancel" type="button">セットを取り消す</button>
+    </section>
+
+    <!-- 鳴動中 -->
+    <section class="panel" id="ringing" hidden>
+      <p class="big shout">起きて！！</p>
+      <button class="btn stop" id="stop" type="button">
+        <span class="fill" id="stopFill"></span>
+        <span class="text">3秒長押しで止める</span>
+      </button>
+    </section>
+
+    <!-- 再読み込み後など、操作が必要なとき -->
+    <section class="panel" id="resume" hidden>
+      <p class="sub">セット中のアラームがあります。音を鳴らす準備のため、一度タップしてください。</p>
+      <button class="btn primary" id="resumeBtn" type="button">待機を再開</button>
+    </section>
+  </main>
+
+  <audio id="player" playsinline preload="auto"></audio>
+  <script src="app.js"></script>
+</body>
+</html>
